@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "rewrites": [ {
+      "source": "**/!(*.css|*.js|*.map|*.jpg|*.gif|*.png|*.php)",
+      "destination": "/index.html"
+    } ],
+    "public": "dist\\spa",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

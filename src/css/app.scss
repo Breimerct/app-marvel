@@ -1,0 +1,28 @@
+// app global css in SCSS form
+.main-container {
+  width: 70%;
+  margin: 0 auto;
+}
+@media (max-width: $breakpoint-sm-max) {
+  .main-container {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.q-card {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.q-page {
+  min-height: 94vh !important;
+}
+
+.filter-blur {
+  -webkit-backdrop-filter: blur(15px) !important;
+  backdrop-filter: blur(15px) !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
