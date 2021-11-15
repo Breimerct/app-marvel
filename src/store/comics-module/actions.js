@@ -68,6 +68,7 @@ export const fetchComicDetail = ({ commit }, payload) => {
     Loading.show()
     commit('setComicDetail', {})
     store.commit("CharactersModule/setCharacters", {})
+
     http.get(`/comics/${payload.comicId}`)
       .then(({ data }) => {
         commit('setComicDetail', data.data.results[0])

@@ -19,6 +19,9 @@ const routes = [
         path: '/characters/character-detail/:id',
         name: 'characterDetail',
         component: () => import('pages/home/characters/CharacterDetail.vue'),
+        redirect: {
+          name: 'characterComics'
+        },
         children: [
           {
             path: '/characters/character-detail/:id/comics',
@@ -41,6 +44,9 @@ const routes = [
         path: '/comics/comic-detail/:id',
         name: 'comicsDetail',
         component: () => import('pages/home/comics/ComicDetail.vue'),
+        redirect: {
+          name: 'comicsCharacters'
+        },
         children: [
           {
             path: '/comics/comic-detail/:id/characters',

@@ -83,11 +83,6 @@ export default {
 
   mounted() {
     this.fetchCharacterDetails({characterId: this.$route.params.id})
-      .then(() => {
-        this.$router.push({
-          name: 'characterComics'
-        })
-      })
   }
 }
 </script>
