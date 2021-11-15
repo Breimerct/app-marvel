@@ -8,7 +8,7 @@
       <marvel-card
         :item="item"
         component="charactersDetail"
-        @addToFavorite="addToFavorite"
+        @addToFavorite="addOrRemoveToFavorite"
       />
     </div>
     <div class="q-pa-lg flex flex-center col-12" v-if="getComics.total > perPage">
@@ -45,7 +45,7 @@ export default {
 
   methods: {
     ...mapActions('CharactersModule', ['fetchCharacterComics']),
-    ...mapActions('FavoriteModule', ['addToComicsFavorites']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToComicsFavorites']),
 
     fetchNextComics () {
       let offset = this.perPage * (this.currentPage - 1)
@@ -56,8 +56,8 @@ export default {
       })
     },
 
-    addToFavorite (item) {
-      this.addToComicsFavorites({
+    addOrRemoveToFavorite (item) {
+      this.addOrRemoveToComicsFavorites({
         comic: item,
         component: 'characterComics'
       })

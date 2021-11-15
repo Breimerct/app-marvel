@@ -79,7 +79,7 @@
           <marvel-card
             :item="item"
             component="comics"
-            @addToFavorite="addToFavorite"
+            @addToFavorite="addOrRemoveToFavorite"
           />
         </div>
         <no-results v-if="getComics.results.length === 0"/>
@@ -146,7 +146,7 @@ export default {
 
   methods: {
     ...mapActions('ComicsModule', ['fetchComics']),
-    ...mapActions('FavoriteModule', ['addToComicsFavorites', 'fetchFavoritesComics']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToComicsFavorites', 'fetchFavoritesComics']),
 
     fetchNextComics () {
       this.search = ''
@@ -163,8 +163,8 @@ export default {
       })
     },
 
-    addToFavorite (item) {
-      this.addToComicsFavorites({
+    addOrRemoveToFavorite (item) {
+      this.addOrRemoveToComicsFavorites({
         userId: this.getUser.id,
         comic: item
       })

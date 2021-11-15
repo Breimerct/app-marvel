@@ -72,7 +72,7 @@
           <marvel-card
             :item="item"
             component="characters"
-            @addToFavorite="addToFavorite"
+            @addToFavorite="addOrRemoveToFavorite"
           />
         </div>
         <no-results v-if="getCharacters.results.length === 0"/>
@@ -119,7 +119,7 @@ export default {
 
   methods: {
     ...mapActions('CharactersModule', ['fetchCharacters']),
-    ...mapActions('FavoriteModule', ['addToCharacterFavorites', 'fetchFavoritesCharacters']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToCharacterFavorites', 'fetchFavoritesCharacters']),
     ...mapMutations('FavoriteModule', ['setFavoriteCharacter']),
 
     fetchNextCharacters () {
@@ -136,12 +136,6 @@ export default {
       this.fetchCharacters({
         ...params
       })
-      this.$router.push({
-        name: 'characters',
-        query: {
-          page: this.current
-        }
-      })
     },
 
     filterCharactersByName () {
@@ -154,17 +148,17 @@ export default {
       this.$refs.inputSearch.focus()
     },
 
-    sortBy (e) {
+    sortBy (sort) {
       this.fetchCharacters({
         offset: 0,
-        orderBy: e
+        orderBy: sort
       })
     },
 
-    addToFavorite (item) {
-      this.addToCharacterFavorites({
+    addOrRemoveToFavorite (character) {
+      this.addOrRemoveToCharacterFavorites({
         userId: this.getUser.id,
-        character: item
+        character: character
       })
     }
   },
@@ -187,10 +181,6 @@ export default {
       if (oldVal.length === 0) {
         this.fetchCharacters({offset: 0})
       }
-    },
-    '$route' (oldVal, newVal) {
-      this.current = parseInt(this.$route.query.page.toString())
-      this.fetchNextCharacters()
     }
   },
 

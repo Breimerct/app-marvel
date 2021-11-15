@@ -59,7 +59,6 @@ export default {
   methods: {
     ...mapActions('UserModule', ['resetPassword']),
     onSubmit () {
-      console.log(this.email)
       this.resetPassword({
         email: this.email
       })

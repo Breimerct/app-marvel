@@ -5,7 +5,7 @@ Loading.setDefaults({
   spinner: QSpinnerOrbit
 })
 
-export const addToCharacterFavorites = ({ commit }, payload) => {
+export const addOrRemoveToCharacterFavorites = ({commit}, payload) => {
   const currentUser = store.getters["UserModule/getUser"]
   let favoritesDB = db.ref(`/users/${currentUser.id}/characters/${payload.character.id}`)
   if (payload.character.isFavorite) {
@@ -68,39 +68,13 @@ export const fetchFavoritesCharacters = ({ commit }, payload) => {
   })
 }
 
-export const addToComicsFavorites = ({ commit }, payload) => {
+export const addOrRemoveToComicsFavorites = ({ commit }, payload) => {
   const currentUser = store.getters["UserModule/getUser"]
   let favoritesDB = db.ref(`/users/${currentUser.id}/comics/${payload.comic.id}`)
   if (payload.comic.isFavorite) {
-    favoritesDB.remove()
-      .then(() => {
-        commit('setFavoriteComic', {
-          component: payload.component || '',
-          ...payload.comic
-        })
-      })
-      .catch(err => {
-        Notify.create({
-          message: err.message,
-          type: 'negative'
-        })
-      })
+    removeFavorite(favoritesDB, payload, commit)
   } else {
-    favoritesDB
-      .set({
-        ...payload.comic,
-        isFavorite: true
-      })
-      .then(res => {
-        commit('setFavoriteComic', payload.comic)
-      })
-      .catch(err => {
-        console.log(err)
-        Notify.create({
-          message: err.message,
-          type: 'negative'
-        })
-      })
+    addFavorite(favoritesDB, payload, commit)
   }
 }
 
@@ -129,4 +103,38 @@ export const fetchFavoritesComics = ({ commit }) => {
         Loading.hide()
       })
   })
+}
+
+const addFavorite = (favoritesDB, payload, commit) => {
+  favoritesDB
+    .set({
+      ...payload.comic,
+      isFavorite: true
+    })
+    .then(res => {
+      commit('setFavoriteComic', payload.comic)
+    })
+    .catch(err => {
+      console.log(err)
+      Notify.create({
+        message: err.message,
+        type: 'negative'
+      })
+    })
+}
+
+const removeFavorite = (favoritesDB, payload, commit) => {
+  favoritesDB.remove()
+    .then(() => {
+      commit('setFavoriteComic', {
+        component: payload.component || '',
+        ...payload.comic
+      })
+    })
+    .catch(err => {
+      Notify.create({
+        message: err.message,
+        type: 'negative'
+      })
+    })
 }
