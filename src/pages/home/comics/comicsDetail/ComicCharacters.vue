@@ -65,7 +65,7 @@ export default {
 
   methods: {
     ...mapActions('ComicsModule', ['fetchComicsCharacters']),
-    ...mapActions('FavoriteModule', ['addToCharacterFavorites']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToCharacterFavorites']),
 
     fetchNextCharacters () {
       let offset = this.perPage * (this.currentPage - 1)
@@ -77,7 +77,7 @@ export default {
     },
 
     addToFavorite (item) {
-      this.addToCharacterFavorites({
+      this.addOrRemoveToCharacterFavorites({
         character: item,
         component: 'comicCharacters'
       })

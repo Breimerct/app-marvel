@@ -1,20 +1,20 @@
 <template>
   <section>
-    <div class="row flex flex-center" v-if="favoriteCharacters.length > 0">
+    <div class="row flex flex-center" v-if="charactersFavorites.length > 0">
       <div
         class="col-sm-4 col-md-4 col-lg-4 col-xs-6 q-pa-sm q-mt-lg"
-        v-for="item in favoriteCharacters"
+        v-for="item in charactersFavorites"
         :key="item.id"
       >
         <marvel-card
           :item="item"
           component="characters"
-          @addToFavorite="addToFavorite"
+          @addToFavorite="addOrRemoveToFavorite"
         />
       </div>
       <div class="q-pa-lg flex flex-center col-12">
         <q-pagination
-          v-if="favoriteCharacters.length !== 0"
+          v-if="charactersFavorites.length !== 0"
           size="20px"
           v-model="current"
           :max="maxPagination"
@@ -23,7 +23,6 @@
           color="red"
           input
           :input-class="[$q.dark.isActive ? 'text-white' : 'text-black']"
-          @input="fetchNextCharacters"
         />
       </div>
     </div>
@@ -46,8 +45,7 @@ export default {
 
   data: () => ({
     current: 1,
-    perPage: 20,
-    favoriteCharacters: []
+    perPage: 20
   }),
 
   computed: {
@@ -56,31 +54,33 @@ export default {
     maxPagination () {
       return Math.ceil(this.getCharactersFavorites.length / this.perPage)
     },
+
+    start () {
+      return this.perPage * (this.current - 1)
+    },
+
+    end () {
+      return this.current * this.perPage
+    },
+
+    charactersFavorites () {
+      return this.getCharactersFavorites.slice(this.start, this.end)
+    }
   },
 
   methods: {
-    ...mapActions('FavoriteModule', ['addToCharacterFavorites', 'fetchFavoritesCharacters']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToCharacterFavorites', 'fetchFavoritesCharacters']),
 
-    addToFavorite (item) {
-      this.addToCharacterFavorites({
+    addOrRemoveToFavorite (item) {
+      this.addOrRemoveToCharacterFavorites({
         character: item,
         component: 'characterFavorites'
       })
-    },
-
-    fetchNextCharacters () {
-      let start = this.perPage * (this.current - 1)
-      let end = this.current * this.perPage
-      this.favoriteCharacters = this.getCharactersFavorites.slice(start, end)
     }
   },
 
   mounted () {
     this.fetchFavoritesCharacters()
-      .then(() => {
-        this.favoriteCharacters = this.getCharactersFavorites
-        this.fetchNextCharacters()
-      })
   }
 }
 </script>

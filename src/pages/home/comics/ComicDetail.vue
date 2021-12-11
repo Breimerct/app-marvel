@@ -82,7 +82,7 @@
         </q-tabs>
         <q-separator />
         <div class="q-mt-lg q-pa-md">
-          <router-view/>
+          <router-view />
         </div>
       </div>
     </div>
@@ -155,6 +155,7 @@ export default {
 
   filters: {
     date (val) {
+      if (!val) return
       return moment(val).format('MMM Do YYYY')
     }
   },
@@ -163,11 +164,6 @@ export default {
     this.fetchComicDetail({
       comicId: this.$route.params.id
     })
-      .then(res => {
-        this.$router.push({
-          name: 'comicsCharacters'
-        })
-      })
   }
 }
 </script>

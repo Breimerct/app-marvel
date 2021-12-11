@@ -23,7 +23,6 @@
           color="red"
           input
           :input-class="[$q.dark.isActive ? 'text-white' : 'text-black']"
-          @input="nextComics"
         />
       </div>
     </div>
@@ -47,7 +46,6 @@ export default {
   data: () => ({
     current: 1,
     perPage: 20,
-    comicsFavorites: []
   }),
 
   computed: {
@@ -56,31 +54,33 @@ export default {
     maxPagination () {
       return Math.ceil(this.getComicsFavorites.length / this.perPage)
     },
+
+    start () {
+      return this.perPage * (this.current - 1)
+    },
+
+    end () {
+      return this.current * this.perPage
+    },
+
+    comicsFavorites () {
+      return this.getComicsFavorites.slice(this.start, this.end)
+    }
   },
 
   methods: {
-    ...mapActions('FavoriteModule', ['addToComicsFavorites', 'fetchFavoritesComics']),
+    ...mapActions('FavoriteModule', ['addOrRemoveToComicsFavorites', 'fetchFavoritesComics']),
 
     addToFavorite (item) {
-      this.addToComicsFavorites({
+      this.addOrRemoveToComicsFavorites({
         comic: item,
         component: 'comicsFavorites'
       })
-    },
-
-    nextComics () {
-      let start = this.perPage * (this.current - 1)
-      let end = this.current * this.perPage
-      this.comicsFavorites = this.getComicsFavorites.slice(start, end)
     }
   },
 
   mounted () {
     this.fetchFavoritesComics()
-      .then(() => {
-        this.comicsFavorites = this.getComicsFavorites
-        this.nextComics()
-      })
   }
 }
 </script>
