@@ -36,7 +36,10 @@
           />
           <span
             class="text-caption full-width block"
-            v-if="this.component === 'characters' || this.component === 'comics' || this.component === 'comicsDetail'"
+            v-if="
+            this.component === 'characters' ||
+            this.component === 'comics' ||
+            this.component === 'comicsDetail'"
           >
             modified: {{ item.modified | getYear }}
           </span>
@@ -73,17 +76,16 @@ export default {
     }
   },
 
-  data: () => ({
-    thumbStyle: {
+  data: () => ({}),
+
+  computed: {
+    thumbStyle: () => ({
       right: '2px',
       borderRadius: '5px',
       backgroundColor: '#027be3',
       width: '5px',
       opacity: 0.75
-    }
-  }),
-
-  computed: {
+    }),
     contentStyle () {
       return {
         backgroundColor: 'rgba(0,0,0,0.02)',
