@@ -7,6 +7,7 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
+require('dotenv').config()
 
 module.exports = function (/* ctx */) {
   return {
@@ -72,16 +73,16 @@ module.exports = function (/* ctx */) {
       },
       env: {
         firebaseConfig: {
-          apiKey: "AIzaSyBkvYctQM5Sy-kWUM_MR96oyQmKbHS49G0",
-          authDomain: "marvel-app-comics.firebaseapp.com",
-          projectId: "marvel-app-comics",
-          storageBucket: "marvel-app-comics.appspot.com",
-          messagingSenderId: "668718420823",
-          appId: "1:668718420823:web:a1e25a64945b6a0050e412"
+          apiKey: process.env.API_KEY_FB,
+          authDomain: process.env.AUTH_DOMAIN,
+          projectId: process.env.PROJECT_ID,
+          storageBucket: process.env.STORAGE_BUCKET,
+          messagingSenderId: process.env.MESSAGING_SENDER_ID,
+          appId: process.env.APP_ID
         },
-        hashKey: '49b03386374ca3411aa6bf2a6583253e',
-        apiKey: '12719caed7bb9a71d6012c8662bef8a6',
-        apiUrl: 'https://gateway.marvel.com:443/v1/public'
+        hashKey: process.env.HASH_KEY,
+        apiKey: process.env.API_KEY,
+        apiUrl: process.env.API_URL
       }
     },
 
@@ -89,7 +90,7 @@ module.exports = function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: false // opens browser window automatically
     },
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

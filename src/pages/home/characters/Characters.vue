@@ -99,6 +99,7 @@
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import MarvelCard from "components/MarvelCard";
 import NoResults from "components/NoResults";
+
 export default {
   name: "Home",
   components: {NoResults, MarvelCard},
@@ -112,7 +113,7 @@ export default {
   computed: {
     ...mapGetters('CharactersModule', ['getCharacters']),
     ...mapGetters('UserModule', ['getUser']),
-    maxPagination () {
+    maxPagination() {
       return Math.ceil(this.getCharacters.total / this.perPage)
     },
   },
@@ -122,7 +123,7 @@ export default {
     ...mapActions('FavoriteModule', ['addOrRemoveToCharacterFavorites', 'fetchFavoritesCharacters']),
     ...mapMutations('FavoriteModule', ['setFavoriteCharacter']),
 
-    fetchNextCharacters () {
+    fetchNextCharacters() {
       let offset = this.perPage * (this.current - 1)
       let params = {}
       if (this.search) {
@@ -133,12 +134,14 @@ export default {
         params.offset = offset
         params.orderBy = this.sort
       }
-      this.fetchCharacters({
-        ...params
+      this.$router.push({
+        query: {
+          page: this.current
+        }
       })
     },
 
-    filterCharactersByName () {
+    filterCharactersByName() {
       if (this.search.length > 0) {
         this.fetchCharacters({
           name: this.search,
@@ -148,14 +151,14 @@ export default {
       this.$refs.inputSearch.focus()
     },
 
-    sortBy (sort) {
+    sortBy(sort) {
       this.fetchCharacters({
         offset: 0,
         orderBy: sort
       })
     },
 
-    addOrRemoveToFavorite (character) {
+    addOrRemoveToFavorite(character) {
       this.addOrRemoveToCharacterFavorites({
         userId: this.getUser.id,
         character: character
@@ -164,12 +167,12 @@ export default {
   },
 
   filters: {
-    getYear (val) {
+    getYear(val) {
       let date = new Date(val)
       return date.getFullYear()
     },
 
-    minimizedWords (val) {
+    minimizedWords(val) {
       val = val.toString()
       let points = val.length > 20 ? '...' : ''
       return val.substr(0, 20) + points
@@ -177,15 +180,15 @@ export default {
   },
 
   watch: {
-    'search' (oldVal, newVal) {
+    'search'(oldVal, newVal) {
       if (oldVal.length === 0) {
         this.fetchCharacters({offset: 0})
       }
     }
   },
 
-  mounted () {
-    this.fetchFavoritesCharacters ()
+  mounted() {
+    this.fetchFavoritesCharacters()
       .then(() => {
         this.fetchCharacters({
           offset: 0,
@@ -193,6 +196,12 @@ export default {
         })
         this.$refs.inputSearch.focus()
       })
+
+    this.$router.push({
+      query: {
+        page: 1
+      }
+    })
   }
 }
 </script>
@@ -204,6 +213,7 @@ export default {
     height: 100%;
   }
 }
+
 .q-page {
   min-height: 94vh !important;
 }

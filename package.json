@@ -8,12 +8,14 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "dev": "quasar dev",
-    "build": "quasar build -m spa"
+    "build": "quasar build -m spa",
+    "firebase:deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.3",
     "firebase": "^8.5.0",
     "moment": "^2.29.1",
     "quasar": "^1.0.0",
